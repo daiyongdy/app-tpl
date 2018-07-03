@@ -83,5 +83,6 @@
     <module>app-tpl-service</module>
     <module>app-tpl-console</module>
     <module>app-tpl-web</module>
+    <module>app-tpl-pc</module>
   </modules>
 </project>
