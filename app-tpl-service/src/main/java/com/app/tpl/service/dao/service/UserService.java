@@ -6,6 +6,11 @@ package com.app.tpl.service.dao.service;
  */
 public interface UserService {
 
-	Boolean register(String mobile);
+	Boolean register(String mobile, String password, String code);
 
+	Boolean getRegisterSms(String mobile);
+
+	Boolean getLoginSms(String mobile);
+
+	String smsLogin(String mobile, String code);
 }

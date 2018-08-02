@@ -7,6 +7,7 @@ import com.app.tpl.service.dao.model.db.TplUserExample;
 import com.app.tpl.service.dao.service.UserService;
 import com.app.tpl.service.dao.sms.SmsUtils;
 import com.app.tpl.service.dao.util.RandomCodeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by daiyong on 2018/7/3.
@@ -35,8 +37,36 @@ public class UserServiceImpl implements UserService {
 
 	private static final String USER_REGISTER_PRERIX = "re:";
 
+	private static final String USER_LOGIN_PRERIX = "login:";
+
 	@Override
-	public Boolean register(String mobile) {
+	public Boolean register(String mobile, String password, String code) {
+
+		String regCode = stringRedisTemplate.opsForValue().get(USER_REGISTER_PRERIX + mobile);
+		if (!StringUtils.isNotBlank(regCode)) {
+			throw new BizException("0003", "注册验证码失效，请重新获取验证码");
+		}
+
+		if (!regCode.equals(code)) {
+			throw new BizException("0004", "验证码错误");
+		}
+
+		TplUser tplUser = new TplUser();
+		tplUser.setMobile(mobile);
+		tplUser.setPassword(password);
+		tplUser.setCreateTime(new Date());
+		tplUserMapper.insertSelective(tplUser);
+
+		return true;
+	}
+
+	/**
+	 * 发送注册验证码
+	 * @param mobile
+	 * @return
+	 */
+	@Override
+	public Boolean getRegisterSms(String mobile) {
 
 		TplUserExample tplUserExample = new TplUserExample();
 		tplUserExample.createCriteria().andMobileEqualTo(mobile);
@@ -50,19 +80,34 @@ public class UserServiceImpl implements UserService {
 		LOG.info("{} 发送注册短信 {}", mobile, smsSendResult);
 
 		if (!smsSendResult) {
-			throw new BizException("0002", "短信验证码发送失败");
+			throw new BizException("0002", "注册短信验证码发送失败");
 		}
 
-		stringRedisTemplate.opsForValue().set(USER_REGISTER_PRERIX + mobile, code);
+		stringRedisTemplate.opsForValue().set(USER_REGISTER_PRERIX + mobile, code, 2L * 60, TimeUnit.SECONDS);
 
-		TplUser tplUser = new TplUser();
-		tplUser.setMobile(mobile);
-		tplUser.setCreateTime(new Date());
-		tplUserMapper.insertSelective(tplUser);
-
-		return true;
+		return Boolean.TRUE;
 	}
 
+	@Override
+	public Boolean getLoginSms(String mobile) {
+
+		String code = RandomCodeUtils.random(4);
+		boolean smsSendResult = SmsUtils.send(code + ", 2", mobile);
+		LOG.info("{} 发送登录短信 {}", mobile, smsSendResult);
+
+		if (!smsSendResult) {
+			throw new BizException("0002", "登录短信验证码发送失败");
+		}
+
+		stringRedisTemplate.opsForValue().set(USER_LOGIN_PRERIX + mobile, code, 2L * 60, TimeUnit.SECONDS);
+
+		return Boolean.TRUE;
+	}
+
+	@Override
+	public String smsLogin(String mobile, String code) {
+		return null;
+	}
 
 
 }
