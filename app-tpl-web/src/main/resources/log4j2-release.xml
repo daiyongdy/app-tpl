@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" strict="true" name="antiAdminLog4jConfig"
+               packages="com.coohua.mall">
+
+    <Properties>
+        <Property name="rootPath">/data/logs/tpl</Property>
+        <Property name="sysLogFilePath">${rootPath}/sys.log</Property>
+        <Property name="cronLogFilePath">${rootPath}/cron.log</Property>
+        <Property name="debug">debug</Property>
+        <Property name="isBufferedIO">true</Property>
+        <Property name="isImmediateFlush">true</Property>
+        <Property name="isIgnoreExceptions">false</Property>
+        <Property name="bufferSize">8192</Property>
+        <Property name="encodingType">UTF-8</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingRandomAccessFile name="sysLogAppender"
+                                 fileName="${sysLogFilePath}" filePattern="${sysLogFilePath}.%d{yyyyMMdd}.%i.log"
+                                 immediateFlush="${isImmediateFlush}" ignoreExceptions="${isIgnoreExceptions}"
+                                 bufferSize="${bufferSize}">
+            <PatternLayout>
+                <Pattern>%d[%p]%C{1}.%M(%L)|%m%n</Pattern>
+                <charset>${encodingType}</charset>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB" />
+            </Policies>
+        </RollingRandomAccessFile>
+        <Async name="asyncSysLogAppender">
+            <AppenderRef ref="sysLogAppender"></AppenderRef>
+        </Async>
+
+        <RollingRandomAccessFile name="cronLogAppender"
+                                 fileName="${cronLogFilePath}" filePattern="${cronLogFilePath}.%d{yyyyMMdd}.%i.log"
+                                 immediateFlush="${isImmediateFlush}" ignoreExceptions="${isIgnoreExceptions}"
+                                 bufferSize="${bufferSize}">
+            <PatternLayout>
+                <Pattern>%d[%p]%C{1}.%M(%L)|%m%n</Pattern>
+                <charset>${encodingType}</charset>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB" />
+            </Policies>
+        </RollingRandomAccessFile>
+        <Async name="asyncCronLogAppender">
+            <AppenderRef ref="cronLogAppender"></AppenderRef>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="sysLog" level="debug" additivity="false">
+            <AppenderRef ref="sysLogAppender"></AppenderRef>
+        </Logger>
+        <Logger name="asyncLog" level="debug" additivity="false">
+            <AppenderRef ref="cronLogAppender"></AppenderRef>
+        </Logger>
+    </Loggers>
+</Configuration>
