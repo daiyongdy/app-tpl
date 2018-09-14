@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 public class ApiInceptor implements HandlerInterceptor {
 
@@ -22,6 +23,8 @@ public class ApiInceptor implements HandlerInterceptor {
 	private static final String TOKEN = "ck";
 
 	private static final String USER_KEY = "user:";
+
+	private static final Long EXPIRE_TIMES = 24L * 60L * 60L;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -41,6 +44,9 @@ public class ApiInceptor implements HandlerInterceptor {
 				consoleUserDto.setUserName(tplUser.getUsername());
 				consoleUserDto.setToken(token);
 				ConsoleUserHolder.setUser(consoleUserDto);
+
+				//刷新登录状态
+				stringRedisTemplate.opsForValue().set(USER_KEY + token, JSON.toJSONString(tplUser), EXPIRE_TIMES, TimeUnit.SECONDS);
 			}
 		}
 

@@ -19,7 +19,9 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		//校验用户登录
 		registry.addInterceptor(apiInceptor())
-				.addPathPatterns("/api/**");
+				.addPathPatterns("/console/**")
+				.excludePathPatterns("/console/login")
+				.excludePathPatterns("/console/logout");
 
 	}
 

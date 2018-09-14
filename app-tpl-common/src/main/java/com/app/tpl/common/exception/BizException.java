@@ -32,5 +32,6 @@ public class BizException extends RuntimeException {
 	}
 
 	public static final BizException NO_LOGIN = new BizException("10001", "用户未登录");
+	public static final BizException NO_PRIVILEGE = new BizException("10002", "没有操作权限");
 
 }
