@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.app.tpl.service.dao.mapper.db.TplPrivilegeMapper" >
+  <resultMap id="BaseResultMap" type="com.app.tpl.service.dao.model.db.TplPrivilege" >
+    <id column="privilege_id" property="privilegeId" jdbcType="BIGINT" />
+    <result column="privilege_parent_id" property="privilegeParentId" jdbcType="BIGINT" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="creater_id" property="createrId" jdbcType="BIGINT" />
+    <result column="creater_name" property="createrName" jdbcType="VARCHAR" />
+    <result column="updater_id" property="updaterId" jdbcType="BIGINT" />
+    <result column="updater_name" property="updaterName" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    privilege_id, privilege_parent_id, path, icon, priority, creater_id, creater_name, 
+    updater_id, updater_name, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.app.tpl.service.dao.model.db.TplPrivilegeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tpl_privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tpl_privilege
+    where privilege_id = #{privilegeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tpl_privilege
+    where privilege_id = #{privilegeId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.app.tpl.service.dao.model.db.TplPrivilegeExample" >
+    delete from tpl_privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.app.tpl.service.dao.model.db.TplPrivilege" >
+    insert into tpl_privilege (privilege_id, privilege_parent_id, path, 
+      icon, priority, creater_id, 
+      creater_name, updater_id, updater_name, 
+      update_time)
+    values (#{privilegeId,jdbcType=BIGINT}, #{privilegeParentId,jdbcType=BIGINT}, #{path,jdbcType=VARCHAR}, 
+      #{icon,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, #{createrId,jdbcType=BIGINT}, 
+      #{createrName,jdbcType=VARCHAR}, #{updaterId,jdbcType=BIGINT}, #{updaterName,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.app.tpl.service.dao.model.db.TplPrivilege" >
+    insert into tpl_privilege
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="privilegeId != null" >
+        privilege_id,
+      </if>
+      <if test="privilegeParentId != null" >
+        privilege_parent_id,
+      </if>
+      <if test="path != null" >
+        path,
+      </if>
+      <if test="icon != null" >
+        icon,
+      </if>
+      <if test="priority != null" >
+        priority,
+      </if>
+      <if test="createrId != null" >
+        creater_id,
+      </if>
+      <if test="createrName != null" >
+        creater_name,
+      </if>
+      <if test="updaterId != null" >
+        updater_id,
+      </if>
+      <if test="updaterName != null" >
+        updater_name,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="privilegeId != null" >
+        #{privilegeId,jdbcType=BIGINT},
+      </if>
+      <if test="privilegeParentId != null" >
+        #{privilegeParentId,jdbcType=BIGINT},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="createrId != null" >
+        #{createrId,jdbcType=BIGINT},
+      </if>
+      <if test="createrName != null" >
+        #{createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="updaterId != null" >
+        #{updaterId,jdbcType=BIGINT},
+      </if>
+      <if test="updaterName != null" >
+        #{updaterName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.app.tpl.service.dao.model.db.TplPrivilegeExample" resultType="java.lang.Integer" >
+    select count(*) from tpl_privilege
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tpl_privilege
+    <set >
+      <if test="record.privilegeId != null" >
+        privilege_id = #{record.privilegeId,jdbcType=BIGINT},
+      </if>
+      <if test="record.privilegeParentId != null" >
+        privilege_parent_id = #{record.privilegeParentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.path != null" >
+        path = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.icon != null" >
+        icon = #{record.icon,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priority != null" >
+        priority = #{record.priority,jdbcType=INTEGER},
+      </if>
+      <if test="record.createrId != null" >
+        creater_id = #{record.createrId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createrName != null" >
+        creater_name = #{record.createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updaterId != null" >
+        updater_id = #{record.updaterId,jdbcType=BIGINT},
+      </if>
+      <if test="record.updaterName != null" >
+        updater_name = #{record.updaterName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tpl_privilege
+    set privilege_id = #{record.privilegeId,jdbcType=BIGINT},
+      privilege_parent_id = #{record.privilegeParentId,jdbcType=BIGINT},
+      path = #{record.path,jdbcType=VARCHAR},
+      icon = #{record.icon,jdbcType=VARCHAR},
+      priority = #{record.priority,jdbcType=INTEGER},
+      creater_id = #{record.createrId,jdbcType=BIGINT},
+      creater_name = #{record.createrName,jdbcType=VARCHAR},
+      updater_id = #{record.updaterId,jdbcType=BIGINT},
+      updater_name = #{record.updaterName,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.app.tpl.service.dao.model.db.TplPrivilege" >
+    update tpl_privilege
+    <set >
+      <if test="privilegeParentId != null" >
+        privilege_parent_id = #{privilegeParentId,jdbcType=BIGINT},
+      </if>
+      <if test="path != null" >
+        path = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null" >
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="createrId != null" >
+        creater_id = #{createrId,jdbcType=BIGINT},
+      </if>
+      <if test="createrName != null" >
+        creater_name = #{createrName,jdbcType=VARCHAR},
+      </if>
+      <if test="updaterId != null" >
+        updater_id = #{updaterId,jdbcType=BIGINT},
+      </if>
+      <if test="updaterName != null" >
+        updater_name = #{updaterName,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where privilege_id = #{privilegeId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.app.tpl.service.dao.model.db.TplPrivilege" >
+    update tpl_privilege
+    set privilege_parent_id = #{privilegeParentId,jdbcType=BIGINT},
+      path = #{path,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=INTEGER},
+      creater_id = #{createrId,jdbcType=BIGINT},
+      creater_name = #{createrName,jdbcType=VARCHAR},
+      updater_id = #{updaterId,jdbcType=BIGINT},
+      updater_name = #{updaterName,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where privilege_id = #{privilegeId,jdbcType=BIGINT}
+  </update>
+</mapper>
