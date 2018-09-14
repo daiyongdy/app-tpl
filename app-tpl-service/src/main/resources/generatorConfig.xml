@@ -18,7 +18,13 @@
 
         <javaClientGenerator targetPackage="com.app.tpl.service.dao.mapper.db" targetProject="/Users/daiyong/work/personal/app-tpl/app-tpl-service/src/main/java" type="XMLMAPPER"/>
 
+        <table tableName="tpl_merchant" domainObjectName="TplMerchant"></table>
         <table tableName="tpl_user" domainObjectName="TplUser"></table>
+        <table tableName="tpl_notice" domainObjectName="TplNotice"></table>
+        <table tableName="tpl_privilege" domainObjectName="TplPrivilege"></table>
+        <table tableName="tpl_role" domainObjectName="TplRole"></table>
+        <table tableName="tpl_role_privilege" domainObjectName="TplRolePrivilege"></table>
+        <table tableName="tpl_user_role" domainObjectName="TplUserRole"></table>
 
     </context>
 </generatorConfiguration>
