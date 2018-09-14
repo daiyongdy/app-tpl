@@ -31,4 +31,6 @@ public class BizException extends RuntimeException {
 		this.msg = msg;
 	}
 
+	public static final BizException NO_LOGIN = new BizException("10001", "用户未登录");
+
 }

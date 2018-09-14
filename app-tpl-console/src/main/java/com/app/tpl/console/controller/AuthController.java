@@ -24,7 +24,7 @@ public class AuthController {
 		return WebMessage.build(loginResultDto);
 	}
 
-	@RequestMapping("login")
+	@RequestMapping("logout")
 	public WebMessage logout() {
 		boolean logoutResult = consoleUserService.logout();
 		return WebMessage.build(logoutResult);
